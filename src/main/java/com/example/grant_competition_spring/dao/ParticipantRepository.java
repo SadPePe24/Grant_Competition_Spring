@@ -1,0 +1,11 @@
+package com.example.grant_competition_spring.dao;
+
+import com.example.grant_competition_spring.entity.Participant;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface ParticipantRepository extends JpaRepository<Participant, Long>
+{
+    Optional<Participant> findByLogin(String login);
+}
