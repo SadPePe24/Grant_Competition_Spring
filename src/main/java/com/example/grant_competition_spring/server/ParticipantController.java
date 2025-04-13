@@ -1,6 +1,7 @@
 package com.example.grant_competition_spring.server;
 
 import com.example.grant_competition_spring.dto.request.ParticipantRegisterRequest;
+import com.example.grant_competition_spring.dto.response.LoginResponse;
 import com.example.grant_competition_spring.entity.Participant;
 import com.example.grant_competition_spring.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +25,21 @@ public class ParticipantController
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String login, @RequestParam String password)
     {
-        Participant participant = participantService.login(login, password);
-        return ResponseEntity.ok(participant);
+        String token = participantService.login(login, password);
+        return ResponseEntity.ok(new LoginResponse(token));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestParam String token)
+    {
+        participantService.logout(token);
+        return ResponseEntity.ok("Участник успешно вышел из системы");
+    }
+
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete (@RequestParam String login) {
-        participantService.delete(login);
+    public ResponseEntity<?> delete (@RequestParam String token) {
+        participantService.delete(token);
         return ResponseEntity.ok("Участник удалён");
     }
-
-
 }

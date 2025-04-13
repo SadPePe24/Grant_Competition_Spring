@@ -1,6 +1,7 @@
 package com.example.grant_competition_spring.server;
 
 import com.example.grant_competition_spring.dto.request.ExpertRegisterRequest;
+import com.example.grant_competition_spring.dto.response.LoginResponse;
 import com.example.grant_competition_spring.entity.Expert;
 import com.example.grant_competition_spring.service.ExpertService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,21 @@ public class ExpertController
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String login, @RequestParam String password) {
-        Expert expert = expertService.login(login, password);
-        return ResponseEntity.ok(expert);
+        String token = expertService.login(login, password);
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestParam String token)
+    {
+        expertService.logout(token);
+        return ResponseEntity.ok("Эксперт успешно вышел из системы");
+    }
+
+
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam String login) {
-        expertService.delete(login);
+    public ResponseEntity<?> delete(@RequestParam String token) {
+        expertService.delete(token);
         return ResponseEntity.ok("Эксперт удалён");
     }
 }
