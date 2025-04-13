@@ -2,6 +2,7 @@ package com.example.grant_competition_spring.server;
 
 import com.example.grant_competition_spring.dto.request.ParticipantRegisterRequest;
 import com.example.grant_competition_spring.dto.response.LoginResponse;
+import com.example.grant_competition_spring.dto.response.SuccessResponse;
 import com.example.grant_competition_spring.entity.Participant;
 import com.example.grant_competition_spring.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +34,13 @@ public class ParticipantController
     public ResponseEntity<?> logout(@RequestParam String token)
     {
         participantService.logout(token);
-        return ResponseEntity.ok("Участник успешно вышел из системы");
+        return ResponseEntity.ok(new SuccessResponse("Участник успешно вышел из системы"));
     }
 
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete (@RequestParam String token) {
         participantService.delete(token);
-        return ResponseEntity.ok("Участник удалён");
+        return ResponseEntity.ok(new SuccessResponse("Участник успешно удалён"));
     }
 }
