@@ -5,6 +5,7 @@ import com.example.grant_competition_spring.dto.response.LoginResponse;
 import com.example.grant_competition_spring.dto.response.SuccessResponse;
 import com.example.grant_competition_spring.entity.Participant;
 import com.example.grant_competition_spring.service.ParticipantService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ParticipantController
     private final ParticipantService participantService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerParticipant(@RequestBody ParticipantRegisterRequest request)
+    public ResponseEntity<?> registerParticipant(@RequestBody @Valid ParticipantRegisterRequest request)
     {
         Participant participant = participantService.registerParticipant(request);
         return ResponseEntity.ok(participant);

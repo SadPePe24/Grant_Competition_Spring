@@ -1,8 +1,10 @@
 package com.example.grant_competition_spring.service;
 
 import com.example.grant_competition_spring.dao.AuthTokenRepository;
+import com.example.grant_competition_spring.dao.GrantApplicationRepository;
 import com.example.grant_competition_spring.dao.ParticipantRepository;
 import com.example.grant_competition_spring.dto.request.ParticipantRegisterRequest;
+import com.example.grant_competition_spring.entity.GrantApplication;
 import com.example.grant_competition_spring.entity.Participant;
 import com.example.grant_competition_spring.exception.ApplicationException;
 import com.example.grant_competition_spring.exception.ErrorCode;
@@ -11,22 +13,25 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 
 
 @Service
 public class ParticipantService extends BaseAuthService<Participant>
 {
     private final ParticipantRepository participantRepository;
+    private final GrantApplicationRepository grantApplicationRepository;
 
-    public ParticipantService(ParticipantRepository participantRepository, AuthTokenRepository authTokenRepository)
+    public ParticipantService(ParticipantRepository participantRepository, GrantApplicationRepository grantApplicationRepository , AuthTokenRepository authTokenRepository)
     {
         super(authTokenRepository);
         this.participantRepository = participantRepository;
+        this.grantApplicationRepository = grantApplicationRepository;
     }
 
     public Participant registerParticipant(ParticipantRegisterRequest request)
@@ -54,6 +59,7 @@ public class ParticipantService extends BaseAuthService<Participant>
     {
         super.logout(token);
     }
+
 
     public void delete(String token)
     {
@@ -84,5 +90,12 @@ public class ParticipantService extends BaseAuthService<Participant>
     protected String getUserType()
     {
         return "PARTICIPANT";
+    }
+
+    @Override
+    protected void deleteRelatedEntities(String token)
+    {
+        List<GrantApplication> applications = grantApplicationRepository.findByParticipantLogin(token);
+        grantApplicationRepository.deleteAll(applications);
     }
 }

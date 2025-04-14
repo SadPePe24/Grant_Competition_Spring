@@ -6,6 +6,7 @@ import com.example.grant_competition_spring.exception.ApplicationException;
 import com.example.grant_competition_spring.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,12 +48,18 @@ public abstract class BaseAuthService<T>
                 authTokenRepository.delete(authToken);
     }
 
+    @Transactional
     public void delete(String token)
     {
         AuthToken authToken = authTokenRepository.findByToken(token)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INVALID_TOKEN));
 
+        deleteRelatedEntities(authToken.getLogin());
         deleteUserFromDb(authToken.getLogin());
         authTokenRepository.delete(authToken);
+    }
+
+    protected void deleteRelatedEntities(String token) {
+
     }
 }

@@ -3,6 +3,8 @@ package com.example.grant_competition_spring.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "experts")
 @Data
@@ -13,13 +15,15 @@ public class Expert
     private long id;
 
     @Column(name = "first_name")
-    private String firstname;
+    private String firstName;
 
     @Column(name = "last_name")
-    private String lastname;
+    private String lastName;
 
-    @Column(name = "directions")
-    private String directions; // Через запятую
+    @ElementCollection
+    @CollectionTable(name = "expert_directions", joinColumns = @JoinColumn(name = "expert_id"))
+    @Column(name = "direction")
+    private List<String> directions; // Через запятую
 
     @Column(name = "login")
     private String login;

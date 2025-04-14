@@ -19,11 +19,13 @@ import java.util.UUID;
 public class ExpertService extends BaseAuthService<Expert>
 {
     private final ExpertRepository expertRepository;
+    private final RatingService ratingService;
 
-    public ExpertService(ExpertRepository expertRepository, AuthTokenRepository authTokenRepository)
+    public ExpertService(ExpertRepository expertRepository, AuthTokenRepository authTokenRepository, RatingService ratingService)
     {
         super(authTokenRepository);
         this.expertRepository = expertRepository;
+        this.ratingService = ratingService;
     }
 
     public Expert register(ExpertRegisterRequest request)
@@ -32,8 +34,8 @@ public class ExpertService extends BaseAuthService<Expert>
             throw new ApplicationException(ErrorCode.USER_ALREADY_EXISTS);
         }
         Expert expert = new Expert();
-        expert.setFirstname(request.getFirstname());
-        expert.setLastname(request.getLastname());
+        expert.setFirstName(request.getFirstName());
+        expert.setLastName(request.getLastName());
         expert.setDirections(request.getDirections());
         expert.setLogin(request.getLogin());
         expert.setPassword(request.getPassword());
@@ -57,6 +59,13 @@ public class ExpertService extends BaseAuthService<Expert>
     {
         super.delete(token);
     }
+
+    public void giveRating(String token, Long applicationId, int score)
+    {
+        ratingService.giveRating(token, applicationId, score);
+    }
+
+
 
     @Override
     protected String getLogin(Expert user)
