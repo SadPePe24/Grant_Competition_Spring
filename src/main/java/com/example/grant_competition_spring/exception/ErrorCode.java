@@ -13,7 +13,9 @@ public enum ErrorCode
     USER_NOT_FOUND("Пользователь не найден"),
     ACCESS_DENIED("Доступ запрещён"),
     INVALID_APPLICATION("Неверный ID заявки"),
-    ALREADY_RATED("Данный эксперт уже оценивал эту заявку");
+    ALREADY_RATED("Данный эксперт уже оценивал эту заявку"),
+    INVALID_SCORE("Оценка должна быть от 1 до 5"),
+    RATING_NOT_FOUND("Оценка не найдена");
 
     private final String message;
     }

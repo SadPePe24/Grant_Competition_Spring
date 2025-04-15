@@ -9,9 +9,6 @@ import lombok.Data;
 @Data
 public class RatingRequest
 {
-    @NotBlank(message = "Токен обязателен")
-    private String token; // Токен эксперта
-
     @NotNull(message = "ID заявки обязателен")
     private Long applicationId; // ID заявки, которую оцениваем
 
