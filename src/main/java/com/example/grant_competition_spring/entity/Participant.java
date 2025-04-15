@@ -3,6 +3,8 @@ package com.example.grant_competition_spring.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "participants")
 @Data
@@ -26,5 +28,8 @@ public class Participant
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GrantApplication> applications;
 
 }

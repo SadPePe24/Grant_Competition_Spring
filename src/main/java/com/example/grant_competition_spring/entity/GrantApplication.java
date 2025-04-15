@@ -34,4 +34,7 @@ public class GrantApplication
 
     @Column(name = "rating")
     private double rating = 0.0;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
 }

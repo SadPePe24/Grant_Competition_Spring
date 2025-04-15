@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -183,7 +185,17 @@ public class ExpertService extends BaseAuthService<Expert>
     {
         Expert expert = expertRepository.findByLogin(login)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
+        List<Rating> ratings = expert.getRatings();
+
+        Set<GrantApplication> affectedApplications = ratings.stream()
+                        .map(Rating::getApplication)
+                        .collect(Collectors.toSet());
+
         expertRepository.delete(expert);
+        for (GrantApplication app : affectedApplications) {
+            updateApplicationRating(app);
+        }
     }
 
     @Override

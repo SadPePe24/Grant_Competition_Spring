@@ -30,4 +30,8 @@ public class Expert
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "expert", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
+
 }
