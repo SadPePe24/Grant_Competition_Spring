@@ -1,5 +1,6 @@
 package com.example.grant_competition_spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -22,6 +23,7 @@ public class Rating
 
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false, foreignKey = @ForeignKey(name = "fk_rating_application"))
+    @JsonBackReference
     private GrantApplication application;
 
     @Column(nullable = false)

@@ -1,5 +1,8 @@
 package com.example.grant_competition_spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,11 +33,16 @@ public class GrantApplication
 
     @ManyToOne
     @JoinColumn(name = "participant_id", nullable = false, foreignKey = @ForeignKey(name = "fk_applications_participant"))
+    @JsonBackReference
     private Participant participant;
 
     @Column(name = "rating")
     private double rating = 0.0;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Rating> ratings;
+
+    @Column(name = "approved")
+    private boolean approved = false;
 }

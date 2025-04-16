@@ -1,5 +1,7 @@
 package com.example.grant_competition_spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,12 +26,15 @@ public class Participant
     private String companyName;
 
     @Column(name = "login")
+    @JsonIgnore
     private String login;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<GrantApplication> applications;
 
 }
